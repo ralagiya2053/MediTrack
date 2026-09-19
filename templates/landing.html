@@ -1,0 +1,94 @@
+{% extends "base.html" %}
+
+{% block title %}MediTrack — Know what your body is telling you{% endblock %}
+
+{% block content %}
+
+<section class="hero">
+    <div class="hero-inner">
+        <div class="hero-badge">Personal Health Journal</div>
+        <h1 class="hero-title">
+            Listen to your<br>
+            <em>body's signals</em>
+        </h1>
+        <p class="hero-subtitle">
+            Log symptoms, medications, and daily vitals in one calm place.
+            Spot patterns over time and walk into your next appointment
+            with real data — not vague recollections.
+        </p>
+        <div class="hero-actions">
+            <a href="{{ url_for('register') }}" class="btn-primary">Start tracking free</a>
+            <a href="{{ url_for('login') }}" class="btn-ghost">Sign in</a>
+        </div>
+    </div>
+
+    <div class="hero-visual">
+        <div class="vital-panel">
+            <div class="vital-panel-header">
+                <span class="vital-panel-label">Last 7 days</span>
+                <span class="vital-panel-status">Stable</span>
+            </div>
+
+            <div class="vital-list">
+                <div class="vital-row">
+                    <span class="vital-name">Headache</span>
+                    <span class="vital-reading">
+                        <span class="vital-value">3</span> episodes
+                        <span class="vital-tag warn">watch</span>
+                    </span>
+                </div>
+                <div class="vital-row">
+                    <span class="vital-name">Sleep</span>
+                    <span class="vital-reading">
+                        <span class="vital-value">7.2</span> h/night
+                        <span class="vital-tag ok">good</span>
+                    </span>
+                </div>
+                <div class="vital-row">
+                    <span class="vital-name">Resting HR</span>
+                    <span class="vital-reading">
+                        <span class="vital-value">68</span> bpm
+                        <span class="vital-tag ok">good</span>
+                    </span>
+                </div>
+                <div class="vital-row">
+                    <span class="vital-name">Fatigue</span>
+                    <span class="vital-reading">
+                        <span class="vital-value">5</span> / 10
+                        <span class="vital-tag high">high</span>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="features">
+    <div class="features-inner">
+        <div class="feature-card">
+            <div class="feature-icon">✎</div>
+            <h3 class="feature-title">Log in seconds</h3>
+            <p class="feature-body">Capture a symptom, a dose, or a reading the moment it happens. Severity, notes, and time — nothing more than you need.</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon">◔</div>
+            <h3 class="feature-title">See the pattern</h3>
+            <p class="feature-body">Weekly and monthly views surface what a single bad day hides: frequency, intensity, and how symptoms cluster.</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon">⇄</div>
+            <h3 class="feature-title">Share with your doctor</h3>
+            <p class="feature-body">Export a clean, dated summary for your next visit — so the conversation starts from evidence, not memory.</p>
+        </div>
+    </div>
+</section>
+
+<section class="cta-section">
+    <div class="cta-inner">
+        <h2 class="cta-title">Start your health journal today</h2>
+        <p class="cta-body">Free to use. Your entries stay yours. No diagnosis, no noise — just clarity.</p>
+        <a href="{{ url_for('register') }}" class="btn-primary">Create free account</a>
+    </div>
+</section>
+
+{% endblock %}
