@@ -1,11 +1,21 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, g
+from database.db import get_db, init_db, seed_db
 
 app = Flask(__name__)
 
+with app.app_context():
+    init_db()
+    seed_db()
 
 # ------------------------------------------------------------------ #
 # Public routes                                                       #
 # ------------------------------------------------------------------ #
+
+@app.teardown_appcontext
+def teardown_db(exception):
+    db = getattr(g, 'db', None)
+    if db is not None:
+        db.close()
 
 @app.route("/")
 def landing():
