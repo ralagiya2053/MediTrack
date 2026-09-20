@@ -1,67 +1,401 @@
-Add two links to the footer in @templates/base.html:
+Add three links to the footer in @templates/base.html:
 
 - "Terms and Conditions"
 - "Privacy Policy"
+- "Medical Disclaimer"
 
-Both should be plain text links, no special styling needed for now.
-Point both to "#" as placeholder hrefs since the pages don't exist yet.
+Requirements:
+- Wrap them in a new <div class="footer-links"> element.
+- Each link should be an <a> tag with class "footer-link".
+- Point all three to "#" as placeholder hrefs since the pages don't exist yet.
+- Place the new links block below the existing "Not a substitute for
+  professional medical advice." line, inside .footer-inner.
+- Do NOT modify or remove the existing tagline, brand icon, or
+  disclaimer line. Only add the new links block.
 
 Do not modify anything else on the page.
 
 git commit -m "landing: add terms and privacy links to footer”
 
-Create a "Terms and Conditions" page for Spendly.
+Prompt#1: 
 
-1. Add a new route in [@app.py](http://app.py/):
-GET /terms → renders templates/terms.html
-2. Create templates/terms.html with generic terms and conditions
-content appropriate for a personal expense tracking app.
-Include sections like: Acceptance of Terms, Use of Service,
-User Data, Limitations of Liability, and Changes to Terms.
-Extend base.html if it exists, otherwise match the style of
-landing.html.
-3. In @templates/landing.html, update the "Terms and Conditions"
-footer link href from "#" to "/terms".
+Add three links to the footer in @templates/base.html:
 
-git commit -m "landing: add terms and conditions page and route”
-
-Do the same as you did for the Terms and Conditions page,
-but for Privacy Policy.
-
-1. Add a new route in [@app.py](http://app.py/):
-GET /privacy → renders templates/privacy.html
-2. Create templates/privacy.html with generic privacy policy
-content appropriate for a personal expense tracking app.
-Include sections like: Data We Collect, How We Use Your Data,
-Data Storage, Third Party Services, and Contact Us.
-Match the style of terms.html.
-3. In @templates/landing.html, update the "Privacy Policy"
-footer link href from "#" to "/privacy".
-4. Make sure the appearance looks like the website's theme
-
-git commit -m "landing: add privacy policy page and route”
-
-I've attached a screenshot of the updated Spendly hero section design.
-
-Modify only the hero section in @templates/landing.html and @static/css/landing.css
-to match this image exactly. Do not touch any other part of the page.
-
-git commit -m "landing: redesign hero section to match mockup"
-
-Add a modal to @templates/landing.html that opens when the user clicks
-"See how it works".
+- "Terms and Conditions"
+- "Privacy Policy"
+- "Medical Disclaimer"
 
 Requirements:
+- Wrap them in a new <div class="footer-links"> element.
+- Each link should be an <a> tag with class "footer-link".
+- Point all three to "#" as placeholder hrefs since the pages don't exist yet.
+- Place the new links block below the existing "Not a substitute for
+  professional medical advice." line, inside .footer-inner.
+- Do NOT modify or remove the existing tagline, brand icon, or
+  disclaimer line. Only add the new links block.
 
-- Clicking "See how it works" opens a modal overlay
-- Modal contains an embedded YouTube video (use any placeholder YouTube URL
-for now, I will replace it later)
-- Video should be playable inside the modal
-- Clicking the close button OR clicking outside the modal closes it
-- When the modal closes, the video must stop playing (not continue in background)
-- No page libraries or dependencies — vanilla JS only, since we are not
-using any JS framework in this project
+Do not modify anything else on the page.
 
-Do not modify any other part of the page.
+Prompt#2: 
 
-git commit -m "landing: add youtube modal on see how it works click"
+Create a "Terms and Conditions" page for MediTrack.
+
+1. Add a new route in @app.py:
+   GET /terms → renders templates/terms.html
+   Name the view function terms().
+
+2. Create templates/terms.html. Extend base.html.
+
+   LAYOUT:
+   - Wrap the content in a container that reuses the site's existing
+     auth-page structure for consistency: <section class="auth-section">
+     with a <div class="auth-container"> inside.
+   - Override the narrow 440px width by adding a modifier class
+     "auth-container--wide" and use max-width: 720px in CSS (see step 3).
+   - The prose itself should sit inside a <div class="legal-card"> that
+     reuses the .auth-card look (white background, border, radius,
+     padding) — same visual language as login/register.
+
+   THEME ALIGNMENT (critical — do not hardcode):
+   - Do NOT use inline styles for colors, fonts, or sizes.
+   - Do NOT introduce new hex colors, new fonts, or new spacing values.
+   - Reuse existing CSS variables from style.css: --ink, --ink-soft,
+     --ink-muted, --accent, --border, --radius-md, --font-display,
+     --font-body.
+   - Headings (<h1>, <h2>) must use font-family: var(--font-display)
+     and colors from --ink, matching .auth-title and .feature-title.
+   - Body text must use var(--font-body), color --ink-soft, size 0.95rem
+     to match .feature-body and .auth-subtitle rhythm.
+   - Paragraph spacing should feel like the rest of the site (line-height
+     1.7, margin-bottom ~1rem), not like a default browser <p>.
+   - Any links inside the content must use the accent color
+     (var(--accent)) — matching .auth-switch a.
+   - Section headings should have a subtle top border or margin so long
+     text is scannable, but the border must use var(--border-soft).
+
+   CONTENT:
+   Generic Terms and Conditions appropriate for a personal health-tracking
+   web app. MediTrack is a learning/demo project, NOT a real medical
+   service — the wording must reflect that.
+
+   Include the following sections, each with an <h2> heading:
+
+     1. Acceptance of Terms
+     2. Description of Service
+     3. Not Medical Advice (explicitly state the app does not diagnose,
+        treat, cure, or prevent any condition and is not a substitute
+        for professional medical care)
+     4. No Emergency Use (users must contact emergency services, not
+        rely on the app)
+     5. Eligibility (must be 18+, or use with guardian consent)
+     6. User Accounts (responsibility for credentials and activity)
+     7. Acceptable Use (no scraping, reverse engineering, misuse)
+     8. User Content (user owns their health logs; app has license to
+        store and display them for the user)
+     9. Health Data and Privacy (link to /privacy which does not yet
+        exist — use href="/privacy"; this is fine, will be built next)
+     10. No Doctor–Patient Relationship (using MediTrack does not create
+         a clinical relationship with any provider)
+     11. Accuracy of Information (data is user-entered and may be
+         incomplete or inaccurate; do not rely on it for medical
+         decisions)
+     12. Intellectual Property
+     13. Disclaimer of Warranties (as-is, no guarantees)
+     14. Limitation of Liability
+     15. Indemnification
+     16. Termination
+     17. Changes to Terms
+     18. Governing Law (use a placeholder like "the laws of your
+         jurisdiction" — do not invent a country or state)
+     19. Contact (placeholder email: support@meditrack.example)
+
+   Tone: plain English, calm, clinical — matching the existing brand
+   voice. No legalese theatre. Each section 2–5 sentences.
+
+   Include a short intro paragraph above the first section stating
+   the last-updated date as a placeholder, e.g. "Last updated:
+   [Month Year]", styled as .auth-subtitle for consistency.
+
+   Page <title> block should be:
+   {% block title %}Terms and Conditions — MediTrack{% endblock %}
+
+3. Add CSS to @static/css/style.css for the two new classes, placed in
+   a new "Legal pages" section just before the Responsive section:
+
+   - .auth-container--wide { max-width: 720px; }
+
+   - .legal-card {
+       same visual treatment as .auth-card (background, border, radius,
+       padding) but with padding ~2.5rem and text aligned left;
+     }
+
+   - .legal-card h2 {
+       font-family: var(--font-display);
+       font-size: 1.15rem;
+       color: var(--ink);
+       margin-top: 2rem;
+       margin-bottom: 0.5rem;
+       padding-top: 1rem;
+       border-top: 1px solid var(--border-soft);
+     }
+
+   - .legal-card h2:first-of-type { margin-top: 0; border-top: none; padding-top: 0; }
+
+   - .legal-card p {
+       font-size: 0.95rem;
+       color: var(--ink-soft);
+       line-height: 1.7;
+       margin-bottom: 0.85rem;
+     }
+
+   - .legal-card a { color: var(--accent); font-weight: 500; }
+   - .legal-card a:hover { text-decoration: underline; }
+
+   All values must reference existing CSS variables — no hardcoded
+   hex colors, no hardcoded font stacks.
+
+4. In @templates/base.html, update the "Terms and Conditions"
+   footer link href from "#" to "/terms".
+
+Do not modify anything else on the page. Do not alter any existing
+route, template, or CSS rule.
+
+Prompt#2: 
+
+
+Create a "Privacy Policy" page for MediTrack.
+
+1. Add a new route in @app.py:
+   GET /privacy → renders templates/privacy.html
+   Name the view function privacy().
+
+2. Create templates/privacy.html. Extend base.html.
+
+   LAYOUT (match the Terms page exactly):
+   - <section class="auth-section">
+       <div class="auth-container auth-container--wide">
+         <div class="legal-card"> ... </div>
+       </div>
+     </section>
+   - Reuse .legal-card, .auth-container--wide, and the .legal-card h2 / p / a
+     rules already added in style.css for the Terms page. Do NOT add new CSS.
+
+   THEME ALIGNMENT (same rules as Terms page):
+   - No inline styles.
+   - No new hex colors, fonts, or spacing values.
+   - All headings use var(--font-display) via .legal-card h2 (already styled).
+   - All body text uses var(--ink-soft) via .legal-card p (already styled).
+   - Any links use var(--accent) via .legal-card a (already styled).
+
+   Page <title> block:
+   {% block title %}Privacy Policy — MediTrack{% endblock %}
+
+   CONTENT:
+   Generic Privacy Policy appropriate for a personal health-tracking
+   web app. MediTrack is a learning/demo project, NOT a real medical
+   service — the wording must reflect that.
+
+   Intro paragraph (styled as .auth-subtitle, above the first section):
+   "Last updated: [Month Year]. This policy describes what data
+   MediTrack collects, why, and how you can control it."
+
+   Include the following sections, each with an <h2> heading:
+
+     1. Overview and Scope
+        - What this policy covers (the web app), and that it does not
+          cover third-party sites linked from MediTrack.
+        - State that MediTrack is a demo/learning project.
+
+     2. Information We Collect
+        - Account data: name, email, hashed password.
+        - Health data: symptoms, severity, notes, and any vitals the
+          user chooses to log.
+        - Technical data: IP address, browser type, timestamps.
+        - Explicitly state we do NOT collect payment info (no payments
+          feature exists).
+
+     3. How We Use Your Information
+        - To provide the core service (store and display your logs).
+        - To authenticate you.
+        - To improve the service in aggregate.
+        - We do NOT sell your data. We do NOT use health data for
+          advertising.
+
+     4. Legal Basis and Consent
+        - For users in regions with data-protection laws (e.g. GDPR,
+          India's DPDP Act), state that health data is treated as a
+          special category and processed on the basis of your explicit
+          consent, which you give by creating an account and logging
+          entries.
+
+     5. How We Store and Protect Your Data
+        - Data is stored in a database on the server hosting MediTrack.
+        - Passwords are hashed (never stored in plain text).
+        - We take reasonable technical measures but no system is 100%
+          secure — say this plainly.
+
+     6. Sharing and Disclosure
+        - We do not share your data with third parties except:
+          (a) when legally required, (b) with your explicit direction
+          (e.g. exporting a report to share with your doctor).
+        - If third-party services are added later (e.g. wearable APIs),
+          this policy will be updated before that happens.
+
+     7. Your Rights
+        - Access: you can view all your data in the app.
+        - Correction: you can edit any log entry.
+        - Deletion: you can delete individual entries; account deletion
+          removes all associated data.
+        - Portability: you may export your data (feature planned).
+        - Contact us to exercise any of these.
+
+     8. Data Retention
+        - Data is retained while your account is active.
+        - On account deletion, personal data is removed from active
+          systems; backups may persist briefly.
+
+     9. Children's Privacy
+        - MediTrack is not intended for users under 18 without guardian
+          consent. We do not knowingly collect data from children.
+
+     10. Cookies and Sessions
+         - We use a single session cookie to keep you signed in.
+         - No advertising or tracking cookies are used.
+
+     11. Changes to This Policy
+         - We may update this policy; the "Last updated" date will
+           reflect changes.
+         - Continued use after changes constitutes acceptance.
+
+     12. Contact
+         - Placeholder email: privacy@meditrack.example
+
+   Tone: plain English, calm, clinical — matching the existing brand
+   voice. Each section 2–5 sentences. No legalese theatre.
+
+3. In @templates/base.html, update the "Privacy Policy" footer link
+   href from "#" to "/privacy".
+
+Do not modify anything else on the page. Do not add new CSS rules.
+Do not alter any existing route, template, or CSS.
+
+
+
+Create a "Medical Disclaimer" page for MediTrack.
+
+1. Add a new route in @app.py:
+   GET /disclaimer → renders templates/disclaimer.html
+   Name the view function disclaimer().
+
+2. Create templates/disclaimer.html. Extend base.html.
+
+   LAYOUT:
+   - <section class="auth-section">
+       <div class="auth-container auth-container--wide">
+         <div class="legal-card"> ... </div>
+       </div>
+     </section>
+   - Reuse .legal-card, .auth-container--wide, and existing .legal-card
+     h2 / p / a rules from style.css.
+
+   THEME ALIGNMENT:
+   - No inline styles.
+   - No new hex colors, fonts, or spacing values.
+   - Reuse existing CSS variables: --accent, --accent-light, --ink,
+     --ink-soft, --ink-muted, --border, --border-soft, --radius-md,
+     --font-display, --font-body.
+
+   Page <title> block:
+   {% block title %}Medical Disclaimer — MediTrack{% endblock %}
+
+   INTRO CALLOUT (place at the top, before any section):
+   - Wrap in <div class="legal-callout">.
+   - Text (bold, using <strong>):
+     "MediTrack is a personal tracking tool, not a medical device.
+      It does not provide medical advice, diagnosis, or treatment."
+   - The callout must visually stand out using the existing accent
+     color tokens (a soft --accent-light background and a left border
+     in --accent). Add the CSS rule in step 3.
+
+   CONTENT:
+   A short, direct Medical Disclaimer for a personal health-tracking
+   web app. MediTrack is a learning/demo project, NOT a real medical
+   service. Keep the whole page readable in under two minutes.
+
+   Include the following sections, each with an <h2> heading:
+
+     1. Not Medical Advice
+        - MediTrack is not a doctor, nurse, pharmacist, or any
+          licensed healthcare provider.
+        - Nothing in the app constitutes medical advice, diagnosis,
+          treatment, or a professional opinion.
+
+     2. No Doctor–Patient Relationship
+        - Using MediTrack does not create a clinical relationship
+          with any healthcare professional.
+
+     3. In Case of Emergency
+        - If you are experiencing a medical emergency, call your
+          local emergency number immediately (e.g. 911 in the US,
+          112 in the EU, 108 in India).
+        - Do not use MediTrack to seek emergency help.
+
+     4. Always Consult a Professional
+        - Before making any health decision — starting, stopping,
+          or changing medication, diet, or treatment — consult a
+          qualified healthcare provider.
+        - Do not disregard or delay professional advice because of
+          something you read or logged in MediTrack.
+
+     5. Accuracy of Information
+        - All data in MediTrack is entered by you.
+        - It may be incomplete, out of date, or inaccurate.
+        - You are solely responsible for the accuracy of what you log.
+
+     6. No Guarantees
+        - We make no claims that MediTrack will improve your health,
+          detect any condition, or replace any clinical tool.
+
+     7. Limitation of Responsibility
+        - To the fullest extent permitted by law, MediTrack and its
+          creators are not responsible for any harm arising from
+          reliance on the app's content or features.
+
+     8. Acknowledgement
+        - By using MediTrack, you confirm you have read and understood
+          this disclaimer.
+
+     9. Contact
+        - Placeholder email: support@meditrack.example
+
+   Tone: direct, calm, and serious — but not alarmist. Sentences short.
+   This page is a safety notice, not a contract.
+
+   Include a short subtitle paragraph above the callout:
+   "Please read this before using MediTrack."
+   Styled as .auth-subtitle.
+
+3. Add CSS to @static/css/style.css for .legal-callout, placed in the
+   "Legal pages" section (same section where .legal-card lives, do not
+   create a new section):
+
+   - .legal-callout {
+       background: var(--accent-light);
+       border-left: 3px solid var(--accent);
+       border-radius: var(--radius-sm);
+       padding: 1rem 1.25rem;
+       margin-bottom: 1.75rem;
+     }
+
+   - .legal-callout strong {
+       color: var(--accent);
+       font-weight: 600;
+     }
+
+   No new CSS variables. No hardcoded colors.
+
+4. In @templates/base.html, update the "Medical Disclaimer" footer link
+   href from "#" to "/disclaimer".
+
+Do not modify anything else on the page. Do not alter any existing
+route, template, or CSS rule.
