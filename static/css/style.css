@@ -504,6 +504,19 @@ a { color: inherit; text-decoration: none; }
 .legal-card a { color: var(--accent); font-weight: 500; }
 .legal-card a:hover { text-decoration: underline; }
 
+.legal-callout {
+    background: var(--accent-light);
+    border-left: 3px solid var(--accent);
+    border-radius: var(--radius-sm);
+    padding: 1rem 1.25rem;
+    margin-bottom: 1.75rem;
+}
+
+.legal-callout strong {
+    color: var(--accent);
+    font-weight: 600;
+}
+
 /* ------------------------------------------------------------------ */
 /* Responsive                                                          */
 /* ------------------------------------------------------------------ */

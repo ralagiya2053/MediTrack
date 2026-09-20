@@ -32,6 +32,11 @@ def privacy():
     return render_template("privacy.html")
 
 
+@app.route("/disclaimer")
+def disclaimer():
+    return render_template("disclaimer.html")
+
+
 # ------------------------------------------------------------------ #
 # Placeholder routes — filled in as the course progresses             #
 # ------------------------------------------------------------------ #
