@@ -29,5 +29,23 @@ day hides.
 | Testing | pytest + pytest-flask |
 
 ---
-
 ## Project Structure
+
+- `app.py`: Main application entry point and routing.
+- `database/`: Database logic and schema management.
+- `static/`: CSS, JS, and image assets.
+- `templates/`: Jinja2 HTML templates.
+- `.claude/`: Project-specific guidance, specs, and plans.
+
+## Current Progress
+- [x] Basic landing page and static routes.
+- [x] Database layer implementation:
+  - `users` table for account management.
+  - `health_logs` table for symptom and medication tracking.
+  - `vitals` table for biometric tracking.
+  - Connection management via Flask `g` object.
+  - Automated database initialization and seeding on startup.
+- [ ] User authentication and session management.
+- [ ] Health log entry forms and storage.
+- [ ] Vitals dashboard and visualization.
+- [ ] Pattern detection and summary reports.
