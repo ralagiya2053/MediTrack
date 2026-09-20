@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% block title %}Privacy Policy — MediTrack{% endblock %}
+
+{% block content %}
+<section class="auth-section">
+    <div class="auth-container auth-container--wide">
+        <div class="legal-card">
+            <h1 class="auth-title" style="text-align: left; margin-bottom: 0.5rem;">Privacy Policy</h1>
+            <p class="auth-subtitle" style="text-align: left; margin-bottom: 2rem;">Last updated: September 2026. This policy describes what data MediTrack collects, why, and how you can control it.</p>
+
+            <h2>Overview and Scope</h2>
+            <p>This Privacy Policy applies to the MediTrack web application. It governs the collection and processing of data within our platform but does not cover the practices of any third-party websites linked from MediTrack. Please note that MediTrack is a demo and learning project, not a commercial medical service.</p>
+
+            <h2>Information We Collect</h2>
+            <p>We collect account data including your name, email address, and a hashed version of your password. We also store the health data you choose to provide, such as symptoms, severity, notes, and vitals. Additionally, we collect basic technical data like your IP address, browser type, and activity timestamps. We do not collect any payment or credit card information.</p>
+
+            <h2>How We Use Your Information</h2>
+            <p>Your information is used to provide the core service by securely storing and displaying your health logs. We use your account data to authenticate your identity and analyze aggregate, anonymized data to improve the app's functionality. We do not sell your personal data, nor do we use your health logs for advertising purposes.</p>
+
+            <h2>Legal Basis and Consent</h2>
+            <p>For users in regions with strict data-protection laws (such as GDPR or India's DPDP Act), we treat health data as a special category of sensitive information. We process this data on the basis of your explicit consent, which is provided when you create an account and enter health logs into the system.</p>
+
+            <h2>How We Store and Protect Your Data</h2>
+            <p>Your data is stored in a secure database on the server hosting the MediTrack application. Passwords are never stored in plain text and are protected using secure hashing algorithms. While we employ reasonable technical and organizational measures to protect your data, no system is 100% secure.</p>
+
+            <h2>Sharing and Disclosure</h2>
+            <p>We do not share your personal or health data with third parties, except where we are legally required to do so or when you explicitly direct us to (for example, when you export a report to share with your physician). If we integrate third-party services like wearable APIs in the future, we will update this policy before doing so.</p>
+
+            <h2>Your Rights</h2>
+            <p>You have the right to access and view all your data directly within the application. You can correct inaccurate information by editing your log entries and can delete individual entries or your entire account to remove all associated data. We are also planning data portability features to allow you to export your logs.</p>
+
+            <h2>Data Retention</h2>
+            <p>Your data is retained as long as your account remains active. Upon the deletion of your account, your personal data is removed from our active systems, although some information may persist briefly in encrypted backups before being fully overwritten.</p>
+
+            <h2>Children's Privacy</h2>
+            <p>MediTrack is not intended for users under the age of 18 without the express consent of a parent or legal guardian. We do not knowingly collect personal information from children.</p>
+
+            <h2>Cookies and Sessions</h2>
+            <p>We use a single session cookie to maintain your signed-in state as you navigate the application. We do not use any advertising, tracking, or third-party analytics cookies.</p>
+
+            <h2>Changes to This Policy</h2>
+            <p>We may update this Privacy Policy periodically to reflect changes in our practices. The "Last updated" date at the top of this page will be updated accordingly. Your continued use of the service after such changes constitutes your acceptance of the new terms.</p>
+
+            <h2>Contact</h2>
+            <p>If you have any questions or requests regarding your data, please contact us at <a href="mailto:privacy@meditrack.example">privacy@meditrack.example</a>.</p>
+        </div>
+    </div>
+</section>
+{% endblock %}
