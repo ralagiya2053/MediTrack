@@ -5,59 +5,74 @@
 {% block content %}
 <section class="auth-section">
     <div class="auth-container">
+        <!-- Page Heading -->
         <div class="auth-header">
-            <h1 class="auth-title">Health Dashboard</h1>
-            <p class="auth-subtitle">Your latest vitals and health activity</p>
+            <h1 class="auth-title" style="font-family: var(--font-display);">Your profile</h1>
+            <p class="auth-subtitle">{{ user['name'] }}</p>
         </div>
 
-        <div class="auth-card">
-            <div class="vital-panel">
-                <div class="vital-panel-header">
-                    <h2 style="font-family: var(--font-display); font-size: 1.1rem; color: var(--ink);">Health Vitals</h2>
+        <!-- User Info Card -->
+        <div class="profile-info-card auth-card">
+            <div class="profile-info-grid">
+                <div class="profile-info-main">
+                    <span class="profile-info-name">{{ user['name'] }}</span>
+                    <span class="profile-info-detail">{{ user['email'] }}</span>
                 </div>
-                <div class="vital-list">
-                    <div class="vital-row">
-                        <span class="vital-name">Sleep</span>
-                        <span class="vital-reading">
-                            <span class="vital-value">7.2 <small>h</small></span>
-                            <span class="vital-tag ok">Normal</span>
-                        </span>
-                    </div>
-                    <div class="vital-row">
-                        <span class="vital-name">Resting HR</span>
-                        <span class="vital-reading">
-                            <span class="vital-value">68 <small>bpm</small></span>
-                            <span class="vital-tag ok">Normal</span>
-                        </span>
-                    </div>
+                <div class="profile-info-meta">
+                    <span class="profile-info-label">Member since</span>
+                    <span class="profile-info-date">{{ user['created_at'][:10] if user['created_at'] else 'N/A' }}</span>
                 </div>
             </div>
         </div>
 
+        <!-- Health Vitals -->
         <div class="auth-card">
-            <h2 style="font-family: var(--font-display); font-size: 1.1rem; color: var(--ink); margin-bottom: 1rem;">Recent Activity</h2>
+            <div class="vital-panel-header" style="margin-bottom: 1.5rem; padding-bottom: 1.15rem; border-bottom: 1px solid var(--border-soft);">
+                <h2 style="font-family: var(--font-display); font-size: 1.1rem; color: var(--ink);">Health Vitals</h2>
+            </div>
             <div class="vital-list">
-                <div class="vital-row">
-                    <span class="vital-name">Headache</span>
-                    <span class="vital-reading">
-                        <span class="vital-value">Severity: 3</span>
-                        <span class="vital-tag ok">Low</span>
-                    </span>
-                </div>
-                <div class="vital-row">
-                    <span class="vital-name">Fatigue</span>
-                    <span class="vital-reading">
-                        <span class="vital-value">Severity: 5</span>
-                        <span class="vital-tag warn">Moderate</span>
-                    </span>
-                </div>
-                <div class="vital-row">
-                    <span class="vital-name">Muscle Pain</span>
-                    <span class="vital-reading">
-                        <span class="vital-value">Severity: 7</span>
-                        <span class="vital-tag high">High</span>
-                    </span>
-                </div>
+                {% if vitals %}
+                    {% for v in vitals %}
+                    <div class="vital-row">
+                        <span class="vital-name">
+                            {{ 'Sleep' if v.metric == 'sleep_hours' else 'Resting HR' }}
+                        </span>
+                        <span class="vital-reading">
+                            <span class="vital-value">{{ v.value }} <small>{{ v.unit }}</small></span>
+                            <span class="vital-tag {{ 'ok' if v.value < 80 else 'warn' if v.value < 100 else 'high' }}">Normal</span>
+                        </span>
+                    </div>
+                    {% endfor %}
+                {% else %}
+                    <p class="auth-subtitle" style="text-align: center;">No vitals recorded yet.</p>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Recent Health Logs -->
+        <div class="auth-card">
+            <div class="vital-panel-header" style="margin-bottom: 1.5rem; padding-bottom: 1.15rem; border-bottom: 1px solid var(--border-soft);">
+                <h2 style="font-family: var(--font-display); font-size: 1.1rem; color: var(--ink);">Recent Health Logs</h2>
+            </div>
+            <div class="vital-list">
+                {% if logs %}
+                    {% for log in logs %}
+                    <div class="vital-row">
+                        <div class="vital-name">
+                            <span class="vital-label">{{ log.symptom }}</span>
+                            <span class="profile-log-date">{{ log.logged_at }}</span>
+                        </div>
+                        <span class="vital-reading">
+                            <span class="vital-value">Severity: {{ log.severity }}</span>
+                            <span class="vital-tag {{ 'ok' if log.severity <= 3 else 'warn' if log.severity <= 6 else 'high' }}">
+                                {{ 'LOW' if log.severity <= 3 else 'MODERATE' if log.severity <= 6 else 'HIGH' }}
+                            </span>
+                        </span>
+                    </div>
+                    {% endfor %}
+                {% else %}
+                    <p class="auth-subtitle" style="text-align: center;">No entries yet.</p>
+                {% endif %}
             </div>
         </div>
     </div>

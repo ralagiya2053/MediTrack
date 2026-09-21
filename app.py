@@ -116,11 +116,21 @@ def profile():
 
     db = get_db()
     user = db.execute(
-        "SELECT name, email FROM users WHERE id = ?",
+        "SELECT name, email, created_at FROM users WHERE id = ?",
         (session["user_id"],)
     ).fetchone()
 
-    return render_template("profile.html", user=user)
+    vitals = db.execute(
+        "SELECT metric, value, unit FROM vitals WHERE user_id = ? ORDER BY logged_at DESC LIMIT 5",
+        (session["user_id"],)
+    ).fetchall()
+
+    logs = db.execute(
+        "SELECT symptom, severity, logged_at FROM health_logs WHERE user_id = ? ORDER BY logged_at DESC LIMIT 5",
+        (session["user_id"],)
+    ).fetchall()
+
+    return render_template("profile.html", user=user, vitals=vitals, logs=logs)
 
 
 @app.route("/logs/add")
