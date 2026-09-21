@@ -4,9 +4,13 @@
 This feature implements the authentication flow for MediTrack, allowing users to securely access their personal health journals. By introducing session management via Flask's `session` object, we can protect sensitive health data and provide a personalized experience. This is a critical step in the roadmap to transition the app from a public landing page to a private, user-centric health journal.
 
 ## Depends on
+<<<<<<< HEAD
 
 - 01 Database set up - (`users` table must exist)
 - 02 Registration (`'create-user` and password hashing must be in place; a user must exist to login against)
+=======
+- 02 Registration
+>>>>>>> 72821283ab9c5d2132142ba29f86b27c03386169
 
 ## Routes
 - `GET /login` — Display login form — public
