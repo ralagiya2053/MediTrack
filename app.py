@@ -75,7 +75,7 @@ def login():
         if user and check_password_hash(user["password_hash"], password):
             session["user_id"] = user["id"]
             flash("Welcome back!", "success")
-            return redirect(url_for("landing"))
+            return redirect(url_for("profile"))
 
         flash("Invalid email or password.", "error")
         return redirect(url_for("login"))
@@ -111,7 +111,16 @@ def logout():
 
 @app.route("/profile")
 def profile():
-    return "Profile page — coming in Step 4"
+    if not session.get("user_id"):
+        return redirect(url_for("login"))
+
+    db = get_db()
+    user = db.execute(
+        "SELECT name, email FROM users WHERE id = ?",
+        (session["user_id"],)
+    ).fetchone()
+
+    return render_template("profile.html", user=user)
 
 
 @app.route("/logs/add")
