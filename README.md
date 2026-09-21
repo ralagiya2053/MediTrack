@@ -45,6 +45,7 @@ day hides.
   - `vitals` table for biometric tracking.
   - Connection management via Flask `g` object.
   - Automated database initialization and seeding on startup.
+- [x] User registration flow.
 - [ ] User authentication and session management.
 - [ ] Health log entry forms and storage.
 - [ ] Vitals dashboard and visualization.
