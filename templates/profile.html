@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+
+{% block title %}Your Profile - MediTrack{% endblock %}
+
+{% block content %}
+<section class="auth-section">
+    <div class="auth-container">
+        <div class="auth-header">
+            <h1 class="auth-title">Health Dashboard</h1>
+            <p class="auth-subtitle">Your latest vitals and health activity</p>
+        </div>
+
+        <div class="auth-card">
+            <div class="vital-panel">
+                <div class="vital-panel-header">
+                    <h2 style="font-family: var(--font-display); font-size: 1.1rem; color: var(--ink);">Health Vitals</h2>
+                </div>
+                <div class="vital-list">
+                    <div class="vital-row">
+                        <span class="vital-name">Sleep</span>
+                        <span class="vital-reading">
+                            <span class="vital-value">7.2 <small>h</small></span>
+                            <span class="vital-tag ok">Normal</span>
+                        </span>
+                    </div>
+                    <div class="vital-row">
+                        <span class="vital-name">Resting HR</span>
+                        <span class="vital-reading">
+                            <span class="vital-value">68 <small>bpm</small></span>
+                            <span class="vital-tag ok">Normal</span>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="auth-card">
+            <h2 style="font-family: var(--font-display); font-size: 1.1rem; color: var(--ink); margin-bottom: 1rem;">Recent Activity</h2>
+            <div class="vital-list">
+                <div class="vital-row">
+                    <span class="vital-name">Headache</span>
+                    <span class="vital-reading">
+                        <span class="vital-value">Severity: 3</span>
+                        <span class="vital-tag ok">Low</span>
+                    </span>
+                </div>
+                <div class="vital-row">
+                    <span class="vital-name">Fatigue</span>
+                    <span class="vital-reading">
+                        <span class="vital-value">Severity: 5</span>
+                        <span class="vital-tag warn">Moderate</span>
+                    </span>
+                </div>
+                <div class="vital-row">
+                    <span class="vital-name">Muscle Pain</span>
+                    <span class="vital-reading">
+                        <span class="vital-value">Severity: 7</span>
+                        <span class="vital-tag high">High</span>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
