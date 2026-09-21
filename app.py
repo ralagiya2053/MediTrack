@@ -121,12 +121,12 @@ def profile():
     ).fetchone()
 
     vitals = db.execute(
-        "SELECT metric, value, unit FROM vitals WHERE user_id = ? ORDER BY logged_at DESC LIMIT 5",
+        "SELECT metric, value, unit, logged_at FROM vitals WHERE user_id = ? ORDER BY logged_at DESC LIMIT 5",
         (session["user_id"],)
     ).fetchall()
 
     logs = db.execute(
-        "SELECT symptom, severity, logged_at FROM health_logs WHERE user_id = ? ORDER BY logged_at DESC LIMIT 5",
+        "SELECT symptom, severity, logged_at, notes FROM health_logs WHERE user_id = ? ORDER BY logged_at DESC LIMIT 5",
         (session["user_id"],)
     ).fetchall()
 
