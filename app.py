@@ -153,9 +153,62 @@ def profile():
     return render_template("profile.html", user=user, vitals=vitals, logs=logs, current_filter=filter_val)
 
 
-@app.route("/logs/add")
+@app.route("/logs/add", methods=["GET", "POST"])
 def add_log():
-    return "Add health log — coming in Step 7"
+    if not session.get("user_id"):
+        return redirect(url_for("login"))
+
+    if request.method == "POST":
+        entry_type = request.form.get("entry_type")
+        symptom = request.form.get("symptom")
+        severity = request.form.get("severity")
+        notes = request.form.get("notes")
+        logged_at = request.form.get("logged_at")
+
+        # Validation
+        if not entry_type or not logged_at:
+            flash("Entry type and date are required.", "error")
+            return redirect(url_for("add_log"))
+
+        if entry_type not in ('symptom', 'medication', 'health_log', 'vitals'):
+            flash("Invalid entry type.", "error")
+            return redirect(url_for("add_log"))
+
+        # Convert severity to int if present, otherwise None
+        try:
+            severity_int = int(severity) if severity else None
+            if severity_int is not None and not (1 <= severity_int <= 10):
+                raise ValueError()
+        except ValueError:
+            flash("Severity must be a number between 1 and 10.", "error")
+            return redirect(url_for("add_log"))
+
+        db = get_db()
+        try:
+            if entry_type == 'vitals':
+                # Vitals are stored in a separate table
+                metric = symptom
+                value = severity_int if severity_int else 0.0
+                unit = 'unit' # Placeholder
+
+                db.execute(
+                    "INSERT INTO vitals (user_id, metric, value, unit, logged_at) VALUES (?, ?, ?, ?, ?)",
+                    (session["user_id"], metric, value, unit, logged_at)
+                )
+            else:
+                db_entry_type = 'symptom' if entry_type == 'health_log' else entry_type
+                db.execute(
+                    "INSERT INTO health_logs (user_id, entry_type, symptom, severity, notes, logged_at) VALUES (?, ?, ?, ?, ?, ?)",
+                    (session["user_id"], db_entry_type, symptom, severity_int, notes, logged_at)
+                )
+            db.commit()
+            flash("Health log added successfully!", "success")
+            return redirect(url_for("profile"))
+        except sqlite3.Error as e:
+            flash(f"An error occurred while saving: {e}", "error")
+            return redirect(url_for("add_log"))
+
+    return render_template("add_log.html", date=date)
 
 
 @app.route("/logs/<int:id>/edit")
