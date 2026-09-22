@@ -294,6 +294,8 @@ def delete_log(id):
 
 @app.route("/vitals/<int:id>/edit", methods=["GET", "POST"])
 def edit_vital(id):
+    # Trigger reload by modifying file
+    pass
     if not session.get("user_id"):
         return redirect(url_for("login"))
 
