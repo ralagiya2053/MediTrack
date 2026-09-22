@@ -1,6 +1,7 @@
 from flask import Flask, render_template, g, request, redirect, url_for, flash, session
 from database.db import get_db, init_db, seed_db
 import sqlite3
+from datetime import date, timedelta
 from werkzeug.security import generate_password_hash, check_password_hash
 
 app = Flask(__name__)
@@ -114,6 +115,17 @@ def profile():
     if not session.get("user_id"):
         return redirect(url_for("login"))
 
+    # Date filter logic
+    filter_val = request.args.get("filter", "all")
+    today = date.today()
+
+    if filter_val == "7":
+        start_date = (today - timedelta(days=7)).strftime("%Y-%m-%d")
+    elif filter_val == "30":
+        start_date = (today - timedelta(days=30)).strftime("%Y-%m-%d")
+    else:
+        start_date = "1900-01-01"
+
     db = get_db()
     user = db.execute(
         "SELECT name, email, created_at FROM users WHERE id = ?",
@@ -121,16 +133,16 @@ def profile():
     ).fetchone()
 
     vitals = db.execute(
-        "SELECT metric, value, unit, logged_at FROM vitals WHERE user_id = ? ORDER BY logged_at DESC LIMIT 5",
-        (session["user_id"],)
+        "SELECT metric, value, unit, logged_at FROM vitals WHERE user_id = ? AND logged_at >= ? ORDER BY logged_at DESC",
+        (session["user_id"], start_date)
     ).fetchall()
 
     logs = db.execute(
-        "SELECT symptom, severity, logged_at, notes FROM health_logs WHERE user_id = ? ORDER BY logged_at DESC LIMIT 5",
-        (session["user_id"],)
+        "SELECT symptom, severity, logged_at, notes FROM health_logs WHERE user_id = ? AND logged_at >= ? ORDER BY logged_at DESC",
+        (session["user_id"], start_date)
     ).fetchall()
 
-    return render_template("profile.html", user=user, vitals=vitals, logs=logs)
+    return render_template("profile.html", user=user, vitals=vitals, logs=logs, current_filter=filter_val)
 
 
 @app.route("/logs/add")
