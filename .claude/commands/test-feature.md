@@ -1,6 +1,6 @@
 ---
 description: Writes and runs tests for a specific MediTrack feature. Pass the spec name as argument e.g. /test-feature 05-db-connection-profile-page
-allowed-tools: Bash
+allowed-tools: Bash, Agent
 ---
 
 Run the full testing pipeline for the feature specified in $ARGUMENTS.

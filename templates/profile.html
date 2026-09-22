@@ -25,6 +25,20 @@
             </div>
         </div>
 
+        <!-- Date Filter -->
+        <div style="margin-bottom: 1.5rem; display: flex; justify-content: flex-end; align-items: center; gap: 0.5rem;">
+            <label for="filter" style="font-size: 0.85rem; color: var(--ink-soft); font-family: var(--font-sans);">Filter by date:</label>
+            <form method="GET" action="{{ url_for('profile') }}" style="display: inline-flex;">
+                <select name="filter" id="filter" onchange="this.form.submit()"
+                        class="profile-filter-select">
+                    <option value="all" {% if current_filter == 'all' %}selected{% endif %}>All Time</option>
+                    <option value="7" {% if current_filter == '7' %}selected{% endif %}>Last 7 Days</option>
+                    <option value="14" {% if current_filter == '14' %}selected{% endif %}>Last 14 Days</option>
+                    <option value="30" {% if current_filter == '30' %}selected{% endif %}>Last 30 Days</option>
+                </select>
+            </form>
+        </div>
+
         <!-- Health Vitals -->
         <div class="auth-card">
             <div class="vital-panel-header" style="margin-bottom: 1.5rem; padding-bottom: 1.15rem; border-bottom: 1px solid var(--border-soft);">
