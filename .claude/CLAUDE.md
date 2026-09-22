@@ -18,8 +18,8 @@ MediTrack is a personal health journal designed to log symptoms, medications, an
   - `PRAGMA foreign_keys = ON` must be enabled on every connection.
   - Connection is closed via `@app.teardown_appcontext`.
 - **Schema Design:**
-  - `users`: Basic identity and authentication (Step 02: Registration).
-  - `health_logs`: Symptom and medication tracking with severity checks (1-10) (Step 07: Add Health Log).
+  - `users`: Basic identity and authentication.
+  - `health_logs`: Symptom and medication tracking with severity checks (1-10).
   - `vitals`: Numeric reading tracking (sleep, HR, weight, etc.).
 
 ## Common Commands
@@ -32,3 +32,13 @@ MediTrack is a personal health journal designed to log symptoms, medications, an
 - `database/db.py`: Database connection logic, schema definitions, and seeding.
 - `.claude/specs/`: Detailed specifications for each implementation step.
 - `.claude/plans/`: Implementation plans for approved features.
+
+## Completed Features
+- [x] 01: Database Setup
+- [x] 02: User Registration
+- [x] 03: Login and Logout
+- [x] 04: Profile Page
+- [x] 05: DB Connection for Profile
+- [x] 06: Date Filter for Profile
+- [x] 07: Add Health Data (Logs & Vitals)
+- [x] 08: Edit and Delete Health Data

@@ -47,6 +47,7 @@ day hides.
   - Automated database initialization and seeding on startup.
 - [x] User registration flow.
 - [x] User authentication and session management.
+- [x] Profile page with data filtering and visualization.
 - [x] Health log entry forms and storage.
-- [ ] Vitals dashboard and visualization.
-- [ ] Pattern detection and summary reports.
+- [x] CRUD operations for health logs and vitals (Edit/Delete).
+- [x] Vitals tracking and reporting.
