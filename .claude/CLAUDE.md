@@ -19,7 +19,7 @@ MediTrack is a personal health journal designed to log symptoms, medications, an
   - Connection is closed via `@app.teardown_appcontext`.
 - **Schema Design:**
   - `users`: Basic identity and authentication (Step 02: Registration).
-  - `health_logs`: Symptom and medication tracking with severity checks (1-10).
+  - `health_logs`: Symptom and medication tracking with severity checks (1-10) (Step 07: Add Health Log).
   - `vitals`: Numeric reading tracking (sleep, HR, weight, etc.).
 
 ## Common Commands

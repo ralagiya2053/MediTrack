@@ -46,7 +46,7 @@ day hides.
   - Connection management via Flask `g` object.
   - Automated database initialization and seeding on startup.
 - [x] User registration flow.
-- [ ] User authentication and session management.
-- [ ] Health log entry forms and storage.
+- [x] User authentication and session management.
+- [x] Health log entry forms and storage.
 - [ ] Vitals dashboard and visualization.
 - [ ] Pattern detection and summary reports.
