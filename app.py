@@ -98,6 +98,13 @@ def disclaimer():
     return render_template("disclaimer.html")
 
 
+@app.route("/analytics")
+def analytics():
+    if not session.get("user_id"):
+        return redirect(url_for("login"))
+    return render_template("analytics.html")
+
+
 # ------------------------------------------------------------------ #
 # Placeholder routes — filled in as the course progresses             #
 # ------------------------------------------------------------------ #
