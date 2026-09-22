@@ -119,10 +119,11 @@ def profile():
     filter_val = request.args.get("filter", "all")
     today = date.today()
 
-    if filter_val == "7":
-        start_date = (today - timedelta(days=7)).strftime("%Y-%m-%d")
-    elif filter_val == "30":
-        start_date = (today - timedelta(days=30)).strftime("%Y-%m-%d")
+    filter_days = {"7": 7, "14": 14, "30": 30}
+    days = filter_days.get(filter_val)
+
+    if days:
+        start_date = (today - timedelta(days=days)).strftime("%Y-%m-%d")
     else:
         start_date = "1900-01-01"
 
