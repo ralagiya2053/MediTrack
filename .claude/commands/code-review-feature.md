@@ -83,8 +83,33 @@ one finding with both perspectives noted.
 
 Structure the combined report as:
 
+```
+Code Review Report — $ARGUMENTS
 
----
+## Security Findings
+[meditrack-security-reviewer output, verbatim]
+
+## Quality Findings
+[meditrack-quality-reviewer output, verbatim]
+
+## Combined Action Plan
+Ordered checklist of everything that needs to be fixed, prioritized
+by severity:
+
+1. [Critical/High security findings first]
+2. [Quality "Worth improving" items second]
+3. [Medium/Low security findings third]
+4. [Quality "Polish ideas" items last]
+
+## Overall Verdict
+One of:
+- APPROVED — ready to commit
+- APPROVED WITH SUGGESTIONS — can commit, address suggestions in
+  future steps
+- CHANGES REQUESTED — must fix before committing, see action plan
+  above
+  
+```
 
 ## Step 3: Ask for Approval
 
