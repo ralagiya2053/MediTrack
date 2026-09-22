@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+
+{% block title %}Edit Health Log - MediTrack{% endblock %}
+
+{% block content %}
+<div class="auth-container">
+    <div class="auth-section legal-card">
+        <h2 class="auth-title">Edit Health Log</h2>
+        <p class="auth-subtitle">Modify an existing entry in your journal.</p>
+
+        <form action="{{ url_for('edit_log', id=log.id) }}" method="POST" class="auth-form">
+            <div class="form-group">
+                <label for="entry_type">Entry Type</label>
+                <select name="entry_type" id="entry_type" required>
+                    <option value="health_log" {% if log.entry_type == 'symptom' or log.entry_type == 'health_log' %}selected{% endif %}>Health Log</option>
+                    <option value="vitals" {% if log.entry_type == 'vitals' %}selected{% endif %}>Vitals</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="symptom">Name/Metric</label>
+                <select name="symptom" id="symptom" required>
+                    <option value="" disabled {% if not log.symptom %}selected{% endif %}>Select an option...</option>
+                    <optgroup label="Health Logs">
+                        {% for option in ['Headache', 'Fatigue', 'Nausea', 'Fever', 'Cough', 'Sore Throat', 'Muscle Pain', 'Other'] %}
+                        <option value="{{ option }}" {% if log.symptom == option %}selected{% endif %}>{{ option }}</option>
+                        {% endfor %}
+                    </optgroup>
+                    <optgroup label="Vitals">
+                        {% for option in ['sleep_hours', 'resting_hr', 'weight_kg', 'blood_pressure_systolic', 'blood_pressure_diastolic'] %}
+                        <option value="{{ option }}" {% if log.symptom == option %}selected{% endif %}>
+                            {{ 'Sleep Hours' if option == 'sleep_hours' else 'Resting HR' if option == 'resting_hr' else 'Weight (kg)' if option == 'weight_kg' else 'BP Systolic' if option == 'blood_pressure_systolic' else 'BP Diastolic' }}
+                        </option>
+                        {% endfor %}
+                    </optgroup>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="severity">Severity (1-10)</label>
+                <input type="number" name="severity" id="severity" min="1" max="10" placeholder="1 = Mild, 10 = Severe" value="{{ log.severity if log.severity else '' }}">
+            </div>
+
+            <div class="form-group">
+                <label for="notes">Notes</label>
+                <textarea name="notes" id="notes" placeholder="Additional details...">{{ log.notes if log.notes else '' }}</textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="logged_at">Date</label>
+                <input type="date" name="logged_at" id="logged_at" required value="{{ log.logged_at }}">
+            </div>
+
+            <button type="submit" class="btn-submit">Update Entry</button>
+        </form>
+    </div>
+</div>
+{% endblock %}
