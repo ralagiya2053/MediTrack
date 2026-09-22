@@ -141,12 +141,12 @@ def profile():
     ).fetchone()
 
     vitals = db.execute(
-        "SELECT metric, value, unit, logged_at FROM vitals WHERE user_id = ? AND logged_at >= ? ORDER BY logged_at DESC",
+        "SELECT id, metric, value, unit, logged_at FROM vitals WHERE user_id = ? AND logged_at >= ? ORDER BY logged_at DESC",
         (session["user_id"], start_date)
     ).fetchall()
 
     logs = db.execute(
-        "SELECT symptom, severity, logged_at, notes FROM health_logs WHERE user_id = ? AND logged_at >= ? ORDER BY logged_at DESC",
+        "SELECT id, symptom, severity, logged_at, notes FROM health_logs WHERE user_id = ? AND logged_at >= ? ORDER BY logged_at DESC",
         (session["user_id"], start_date)
     ).fetchall()
 
@@ -292,9 +292,86 @@ def delete_log(id):
 
 
 
-@app.route("/vitals")
-def vitals():
-    return "Vitals dashboard — the MediTrack extension"
+@app.route("/vitals/<int:id>/edit", methods=["GET", "POST"])
+def edit_vital(id):
+    if not session.get("user_id"):
+        return redirect(url_for("login"))
+
+    db = get_db()
+    vital = db.execute(
+        "SELECT * FROM vitals WHERE id = ? AND user_id = ?",
+        (id, session["user_id"])
+    ).fetchone()
+
+    if not vital:
+        flash("Vital reading not found or unauthorized.", "error")
+        return redirect(url_for("profile"))
+
+    if request.method == "POST":
+        metric = request.form.get("metric")
+        value = request.form.get("value")
+        logged_at = request.form.get("logged_at")
+
+        # Validation
+        if not metric or not logged_at:
+            flash("Metric and date are required.", "error")
+            return redirect(url_for("edit_vital", id=id))
+
+        allowed_metrics = ['sleep_hours', 'resting_hr', 'weight_kg', 'blood_pressure_systolic', 'blood_pressure_diastolic']
+        if metric not in allowed_metrics:
+            flash("Invalid metric.", "error")
+            return redirect(url_for("edit_vital", id=id))
+
+        try:
+            value_float = float(value)
+        except (ValueError, TypeError):
+            flash("Value must be a number.", "error")
+            return redirect(url_for("edit_vital", id=id))
+
+        # Determine unit based on metric
+        units = {
+            'sleep_hours': 'h',
+            'resting_hr': 'bpm',
+            'weight_kg': 'kg',
+            'blood_pressure_systolic': 'mmHg',
+            'blood_pressure_diastolic': 'mmHg'
+        }
+        unit = units[metric]
+
+        try:
+            db.execute(
+                "UPDATE vitals SET metric = ?, value = ?, unit = ?, logged_at = ? WHERE id = ? AND user_id = ?",
+                (metric, value_float, unit, logged_at, id, session["user_id"])
+            )
+            db.commit()
+            flash("Vital reading updated successfully!", "success")
+            return redirect(url_for("profile"))
+        except sqlite3.Error as e:
+            flash(f"An error occurred while updating: {e}", "error")
+            return redirect(url_for("edit_vital", id=id))
+
+    return render_template("edit_vital.html", vital=vital)
+
+
+@app.route("/vitals/<int:id>/delete")
+def delete_vital(id):
+    if not session.get("user_id"):
+        return redirect(url_for("login"))
+
+    db = get_db()
+    cursor = db.execute(
+        "DELETE FROM vitals WHERE id = ? AND user_id = ?",
+        (id, session["user_id"])
+    )
+
+    if cursor.rowcount == 0:
+        flash("Vital reading not found or unauthorized.", "error")
+        return redirect(url_for("profile"))
+
+    db.commit()
+    flash("Vital reading deleted successfully!", "success")
+    return redirect(url_for("profile"))
+
 
 
 if __name__ == "__main__":
