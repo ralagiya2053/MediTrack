@@ -211,14 +211,85 @@ def add_log():
     return render_template("add_log.html", date=date)
 
 
-@app.route("/logs/<int:id>/edit")
+@app.route("/logs/<int:id>/edit", methods=["GET", "POST"])
 def edit_log(id):
-    return "Edit health log — coming in Step 8"
+    if not session.get("user_id"):
+        return redirect(url_for("login"))
+
+    db = get_db()
+    log = db.execute(
+        "SELECT * FROM health_logs WHERE id = ? AND user_id = ?",
+        (id, session["user_id"])
+    ).fetchone()
+
+    if not log:
+        flash("Log entry not found or unauthorized.", "error")
+        return redirect(url_for("profile"))
+
+    if request.method == "POST":
+        entry_type = request.form.get("entry_type")
+        symptom = request.form.get("symptom")
+        severity = request.form.get("severity")
+        notes = request.form.get("notes")
+        logged_at = request.form.get("logged_at")
+
+        # Validation
+        if not entry_type or not logged_at:
+            flash("Entry type and date are required.", "error")
+            return redirect(url_for("edit_log", id=id))
+
+        if entry_type not in ('symptom', 'medication', 'health_log', 'vitals'):
+            flash("Invalid entry type.", "error")
+            return redirect(url_for("edit_log", id=id))
+
+        try:
+            severity_int = int(severity) if severity else None
+            if severity_int is not None and not (1 <= severity_int <= 10):
+                raise ValueError()
+        except ValueError:
+            flash("Severity must be a number between 1 and 10.", "error")
+            return redirect(url_for("edit_log", id=id))
+
+        try:
+            # Normalize entry_type for DB (consistent with add_log)
+            db_entry_type = 'symptom' if entry_type == 'health_log' else entry_type
+            if db_entry_type == 'vitals':
+                flash("Updating vitals entries through the health log editor is not supported. Please use the vitals dashboard.", "error")
+                return redirect(url_for("edit_log", id=id))
+
+            db.execute(
+                "UPDATE health_logs SET entry_type = ?, symptom = ?, severity = ?, notes = ?, logged_at = ? WHERE id = ? AND user_id = ?",
+                (db_entry_type, symptom, severity_int, notes, logged_at, id, session["user_id"])
+            )
+            db.commit()
+            flash("Health log updated successfully!", "success")
+            return redirect(url_for("profile"))
+        except sqlite3.Error as e:
+            flash(f"An error occurred while updating: {e}", "error")
+            return redirect(url_for("edit_log", id=id))
+
+    return render_template("edit_log.html", log=log)
 
 
 @app.route("/logs/<int:id>/delete")
 def delete_log(id):
-    return "Delete health log — coming in Step 9"
+    if not session.get("user_id"):
+        return redirect(url_for("login"))
+
+    db = get_db()
+    cursor = db.execute(
+        "DELETE FROM health_logs WHERE id = ? AND user_id = ?",
+        (id, session["user_id"])
+    )
+
+    if cursor.rowcount == 0:
+        flash("Log entry not found or unauthorized.", "error")
+        return redirect(url_for("profile"))
+
+    db.commit()
+    flash("Health log deleted successfully!", "success")
+    return redirect(url_for("profile"))
+
 
 
 @app.route("/vitals")

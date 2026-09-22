@@ -1,0 +1,26 @@
+{
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python -c \"\nimport sys, json, subprocess, shutil\ndata = json.load(sys.stdin)\nfile = data.get('tool_input', {}).get('file_path', '')\nif not file.endswith('.py'):\n    sys.exit(0)\nif not shutil.which('black'):\n    print('HOOK: black not installed, skipping format', file=sys.stderr)\n    sys.exit(0)\nsubprocess.run(['black', '--quiet', file])\n\""
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python -c \"\nimport sys, json, shlex, re\ndata = json.load(sys.stdin)\ncmd = data.get('tool_input', {}).get('command', '')\nprotected = ['meditrack.db', '.env', '.venv']\ntry:\n    tokens = shlex.split(cmd)\nexcept ValueError:\n    tokens = cmd.split()\nif not tokens:\n    sys.exit(0)\ndestructive = {'rm', 'unlink', 'truncate', 'shred'}\nfirst = tokens[0].split('/')[-1].split('\\\\')[-1]\nif first not in destructive:\n    sys.exit(0)\nfor p in protected:\n    if any(p in t for t in tokens[1:]):\n        print(f'BLOCKED: Cannot run {first} on protected file: {p}', file=sys.stderr)\n        sys.exit(2)\n\""
+          }
+        ]
+      }
+    ]
+  }
+}
