@@ -9,6 +9,7 @@ __pycache__/
 venv/
 
 # Databases
+meditrack.db
 *.sqlite
 *.sqlite3
 *.db
